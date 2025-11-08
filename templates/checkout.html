@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout | Trick or Treat Café</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffe0f0, #fff7fa, #ffeef9);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      color: #ff6b9f;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    form {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 90%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff4081;
+    }
+  </style>
+</head>
+<body>
+  <h1>Checkout</h1>
+
+  <form action="{{ url_for('checkout') }}" method="POST">
+    <label for="customer">Enter your name:</label><br>
+    <input type="text" id="customer" name="customer" placeholder="Your Name" required><br>
+    <button type="submit">Confirm Order</button>
+  </form>
+</body>
+</html>

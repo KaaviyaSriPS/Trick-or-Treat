@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🍦 Login – Trick or Treat Café 🍦</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(to bottom, #fffaf5, #ffe3ec, #f8bbd0);
+      color: #4a2040;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #fff;
+      width: 90%;
+      max-width: 420px;
+      padding: 40px;
+      border-radius: 35px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Lobster', cursive;
+      font-size: 2.4rem;
+      color: #d81b60;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6a1b4d;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px 14px;
+      border: 2px solid #f8bbd0;
+      border-radius: 25px;
+      margin-bottom: 18px;
+      outline: none;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      border-color: #ec407a;
+      box-shadow: 0 0 5px rgba(236, 64, 122, 0.4);
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    button {
+      background: linear-gradient(90deg, #f48fb1, #ec407a);
+      color: white;
+      font-weight: bold;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s ease;
+      box-shadow: 0 3px 8px rgba(244, 143, 177, 0.4);
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #ad1457, #f48fb1);
+      transform: scale(1.05);
+    }
+
+    .msg {
+      color: #ad1457;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #6a1b4d;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 25px;
+      }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h1>🍰 Trick or Treat Café 🍰</h1>
+    <p>Enter your MySQL credentials to access the dessert database.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="msg"><strong>{{ category.title() }}:</strong> {{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if error %}
+      <div class="msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+      <input type="text" name="user" placeholder="MySQL Username" value="{{ user or '' }}" required><br>
+      <input type="password" name="pwd" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <br>
+    <a href="{{ url_for('index') }}"><button>🏠 Back to website</button></a>
+  </div>
+</body>
+</html>

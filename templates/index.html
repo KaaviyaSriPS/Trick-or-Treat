@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🍦 Trick or Treat Café 🍦</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(to bottom, #fffaf5, #ffe3ec, #f8bbd0);
+      color: #4a2040;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    header {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: url('https://images.unsplash.com/photo-1565958011705-44f9829ba187?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: white;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    header h1, header p {
+      position: relative;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-family: 'Lobster', cursive;
+      font-size: 4rem;
+      letter-spacing: 2px;
+      font-weight: 400;
+      background: linear-gradient(90deg, #ffe6e6, #ffb6c1, #f48fb1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 3px 3px 8px rgba(255, 255, 255, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+
+    header p {
+      font-size: 1.3rem;
+      margin-top: 15px;
+      color: #fff8fa;
+      font-weight: 600;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-section {
+      text-align: center;
+      background-color: #fff;
+      margin: 60px auto;
+      padding: 40px 20px;
+      border-radius: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 85%;
+    }
+
+    .menu-section h2 {
+      font-family: 'Lobster', cursive;
+      font-size: 2.2rem;
+      color: #d81b60;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 6px rgba(248, 187, 208, 0.6);
+    }
+
+    /* ===== Cards Grid ===== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      justify-items: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      background-color: #fff8fa;
+      border-radius: 25px;
+      padding: 25px;
+      width: 90%;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+      border: 2px solid #ffe3ec;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      color: #6a1b4d;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      font-family: 'Lobster', cursive;
+    }
+
+    .card a {
+      background: linear-gradient(90deg, #f48fb1, #ec407a);
+      color: white;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      box-shadow: 0 3px 8px rgba(244, 143, 177, 0.4);
+    }
+
+    .card a:hover {
+      background: linear-gradient(90deg, #ad1457, #f48fb1);
+      transform: scale(1.05);
+    }
+    .admin-btn {
+    background: linear-gradient(90deg, #ff6b9f, #ff4081);
+    color: white;
+    font-weight: bold;
+    }
+    .admin-btn:hover {
+    background: linear-gradient(90deg, #ff4081, #ff6b9f);
+    }
+    /* ===== Footer ===== */
+    footer {
+      background-color: #f8bbd0;
+      color: #4a2040;
+      text-align: center;
+      padding: 25px;
+      border-top: 3px solid #f48fb1;
+      margin-top: 50px;
+      font-weight: 600;
+    }
+    
+    button {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff4081;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 2.5rem; }
+      header p { font-size: 1rem; }
+      .menu-section { width: 90%; padding: 25px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🍰 Trick or Treat Café 🍰</h1>
+    <p>Your cozy corner for delightful desserts and data management!</p>
+  </header>
+
+  <main>
+    <section class="menu-section">
+      <h2>🍨 Explore Our Sweet Menu Options</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <img src="https://i.pinimg.com/736x/15/0c/15/150c1590ec73d284012625c2f4fbc64c.jpg" alt="Classic Ice Cream">
+          <h3>Classic Collection</h3>
+          <a href="{{ url_for('classic') }}">View Classics</a>
+        </div>
+
+        <div class="card">
+          <img src="https://i.pinimg.com/736x/50/c8/36/50c836b445e62ce62ede680685b917ec.jpg" alt="Fruit Ice Cream">
+          <h3>Fruit Flavours</h3>
+          <a href="{{ url_for('fruit') }}">View Fruits</a>
+        </div>
+
+        <div class="card">
+          <img src="https://thumbs.dreamstime.com/b/ice-cream-cone-valentines-day-object-watercolor-painting-elements-illustration-ice-cream-cone-valentines-day-object-watercolor-304914221.jpg" alt="Unconventional Flavours">
+          <h3>Unconventional Flavours</h3>
+          <a href="{{ url_for('uncon') }}">View Unconventionals</a>
+        </div>
+
+        <div class="card">
+          <img src="https://i.pinimg.com/736x/1c/b5/c0/1cb5c002546d0a309aa6ec33de9ce666.jpg" alt="Sundaes">
+          <h3>Dreamy Sundaes</h3>
+          <a href="{{ url_for('sundaes') }}">Explore Sundaes</a>
+        </div>
+
+        <div class="card">
+          <img src="https://i.pinimg.com/736x/aa/90/1e/aa901e777f5e1c55af3ac62c583e31ff.jpg" alt="Shakes">
+          <h3>Signature Shakes</h3>
+          <a href="{{ url_for('shakes') }}">View Shakes</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="nav-buttons">
+    <a href="{{ url_for('menu_cart') }}"><button class="cart">🛒 Cart</button></a>
+  </div>
+  <div class="nav-buttons">
+    <a href="{{ url_for('login') }}"><button class="admin-btn">👩‍💼 Login as Admin</button></a>
+  </div>
+  <footer>
+    <p>Made with 💕 by Trick or Treat Café</p>
+  </footer>
+</body>
+</html>

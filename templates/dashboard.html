@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Dashboard – Trick or Treat Café</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ffeaf2, #fff7fc);
+      margin: 0;
+      padding: 20px;
+      color: #4a2040;
+    }
+    h1 {
+      font-family: 'Lobster', cursive;
+      color: #ff6b9f;
+      text-shadow: 1px 1px 2px #fff;
+      font-size: 2.5em;
+      margin-top: 20px;
+      text-align: center;
+    }
+    canvas {
+  display: block;
+  margin: 0 auto;
+  width: 260px !important;
+  height: 260px !important;
+  max-width: 100%;
+  }
+
+    .date-nav {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+    .arrow {
+      color: #d81b60;
+      text-decoration: none;
+      font-size: 1.5rem;
+      margin: 0 15px;
+      transition: 0.2s;
+    }
+    .arrow:hover { color: #ec407a; }
+    .disabled {
+      color: #ccc;
+      pointer-events: none;
+    }
+    .card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px auto;
+  max-width: 650px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+    .highlight {
+      color: #ec407a;
+      font-weight: bold;
+    }
+    ul { list-style-type: none; padding: 0; }
+    li { padding: 6px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #f2f2f2;
+      text-align: center;
+    }
+    th {
+      background: #ffbcd4;
+      color: white;
+    }
+    button {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      background: #ff4081;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .gradient-line {
+      border: none;
+      height: 4px;
+      background: linear-gradient(to right, #f8c5dd, #ff9ecb, #f8c5dd);
+      border-radius: 2px;
+      width: 90%;
+      margin: 25px auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📊 Sales Report 📊</h1>
+  <hr class="gradient-line">
+
+  {% if not no_data %}
+  <!-- Date navigation -->
+  <div class="date-nav">
+    <a href="{{ url_for('dashboard', date=prev_date) }}" class="arrow {% if not prev_date %}disabled{% endif %}">◀</a>
+    {{ selected_date }}
+    <a href="{{ url_for('dashboard', date=next_date) }}" class="arrow {% if not next_date %}disabled{% endif %}">▶</a>
+  </div>
+
+  <!-- Daily summary -->
+  <div class="card">
+    <h3>Summary for {{ selected_date }}</h3>
+    <p>Orders placed: <span class="highlight">{{ orders_yesterday }}</span></p>
+    <p>Items sold: <span class="highlight">{{ items_yesterday }}</span></p>
+    <p>Total revenue: <span class="highlight">₹{{ revenue_yesterday }}</span></p>
+  </div>
+
+  <!-- Popular by category -->
+  <div class="card">
+    <h3>Most Popular by Category</h3>
+    {% if popular_by_category %}
+      <ul>
+        {% for p in popular_by_category %}
+          <li>{{ p.category }} — <strong>{{ p.item }}</strong> ({{ p.orders }} orders)</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No category data available yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Weekly summary -->
+  <div class="card">
+    <h3>This Week</h3>
+    {% if popular and weekly %}
+      <p>Orders placed: <span class="highlight">{{ weekly.orders }}</span></p>
+      <p>Items sold: <span class="highlight">{{ weekly['items'] or 0 }}</span></p>
+      <p>Total Revenue: <span class="highlight">₹{{ weekly.revenue }}</span></p>
+      <p>Most Popular: <span class="highlight">{{ popular.Item }}</span></p>
+      <canvas id="weeklyChart" width="300" height="300"></canvas>
+    {% else %}
+      <p>No orders found yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Monthly summary -->
+  <div class="card">
+    <h3>This Month</h3>
+    {% if monthly %}
+      <p>Orders placed: <span class="highlight">{{ monthly.orders or 0 }}</span></p>
+      <p>Items sold: <span class="highlight">{{ monthly['items'] or 0 }}</span></p>
+      <p>Total revenue: <span class="highlight">₹{{ monthly.revenue or 0 }}</span></p>
+      <canvas id="monthlyChart" width="300" height="300"></canvas>
+    {% else %}
+      <p>No orders recorded yet</p>
+    {% endif %}
+  </div>
+
+  <!-- Recent orders -->
+  <div class="card">
+    <h3>Recent Orders</h3>
+    {% if recent_orders %}
+      <table>
+        <tr>
+          <th>Order No</th>
+          <th>Code</th>
+          <th>Customer</th>
+          <th>Quantity</th>
+          <th>Paid</th>
+          <th>Date</th>
+        </tr>
+        {% for order in recent_orders %}
+        <tr>
+          <td>{{ order.Order_No }}</td>
+          <td>{{ order.Code }}</td>
+          <td>{{ order.Customer }}</td>
+          <td>{{ order.Quantity }}</td>
+          <td>{{ order.Paid }}</td>
+          <td>{{ order.Date }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>No recent orders found 🍦</p>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <h3 style="text-align:center;">No order data available yet 🍰</h3>
+  {% endif %}
+
+  <!-- Logout -->
+  <div class="nav-buttons">
+    <a href="{{ url_for('logout') }}"><button class="logout">🚪 Logout</button></a>
+  </div>
+
+  <!-- JSON data blobs -->
+  <script type="application/json" id="weekly-cats">{{ weekly_categories | tojson | safe }}</script>
+  <script type="application/json" id="weekly-vals">{{ weekly_totals | tojson | safe }}</script>
+  <script type="application/json" id="monthly-cats">{{ monthly_categories | tojson | safe }}</script>
+  <script type="application/json" id="monthly-vals">{{ monthly_totals | tojson | safe }}</script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Read safely embedded JSON data
+    function readJSON(id) {
+      const el = document.getElementById(id);
+      if (!el) return [];
+      try { return JSON.parse(el.textContent || '[]'); }
+      catch(e) { console.error('JSON parse error for', id, e); return []; }
+    }
+
+    const weeklyLabels  = readJSON('weekly-cats');
+    const weeklyData    = readJSON('weekly-vals');
+    const monthlyLabels = readJSON('monthly-cats');
+    const monthlyData   = readJSON('monthly-vals');
+
+    const palette = ['#f48fb1', '#ffcc80', '#b39ddb', '#80deea', '#c5e1a5'];
+
+    // --- Weekly pie chart ---
+    if (weeklyLabels && weeklyLabels.length) {
+      new Chart(document.getElementById('weeklyChart'), {
+        type: 'pie',
+        data: {
+          labels: weeklyLabels,
+          datasets: [{
+            data: weeklyData,
+            backgroundColor: palette.slice(0, weeklyLabels.length),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1,
+          plugins: { legend: { position: 'bottom' }, tooltip: {
+      callbacks: {
+        label: function(context) {
+          let label = context.label || '';
+          let value = context.raw || 0;
+          return `${label}: ₹${value.toLocaleString()}`;
+        }
+      }
+    }}
+        }
+      });
+    } else {
+      document.getElementById('weeklyChart').style.display = 'none';
+    }
+
+    // --- Monthly pie chart ---
+    if (monthlyLabels && monthlyLabels.length) {
+      new Chart(document.getElementById('monthlyChart'), {
+        type: 'pie',
+        data: {
+          labels: monthlyLabels,
+          datasets: [{
+            responsive: true,
+            data: monthlyData,
+            backgroundColor: palette.slice(0, monthlyLabels.length),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          maintainAspectRatio: true,
+          aspectRatio: 1,
+          plugins: { legend: { position: 'bottom' },tooltip: {
+      callbacks: {
+        label: function(context) {
+          let label = context.label || '';
+          let value = context.raw || 0;
+          return `${label}: ₹${value.toLocaleString()}`;
+        }
+      }
+    } }
+        }
+      });
+    } else {
+      document.getElementById('monthlyChart').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

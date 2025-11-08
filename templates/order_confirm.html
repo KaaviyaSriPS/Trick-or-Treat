@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Confirmation | Trick or Treat Café</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffe0f0, #fff7fa, #ffeef9);
+      padding: 40px;
+    }
+    h1 {
+      color: #ff6b9f;
+      font-family: 'Pacifico', cursive;
+    }
+    .card {
+      background: white;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    button {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff4081;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thank you, {{ customer }}!</h1>
+  <div class="card">
+    <p>Your order has been placed successfully 🎉</p>
+    <p><strong>Order No:</strong> {{ order_no }}</p>
+    <p><strong>Total Paid:</strong> ₹{{ total }}</p>
+  </div>
+  <br><br>
+  <a href="{{ url_for('index') }}"><button>🏠 Return Home</button></a>
+</body>
+</html>

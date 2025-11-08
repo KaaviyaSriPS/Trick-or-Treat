@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ title }} | Trick or Treat Café</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffe0f0, #fff7fa, #ffeef9);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-family: 'Poppins', cursive;
+      color: #ff6b9f;
+      text-shadow: 1px 1px 2px #fff;
+      font-size: 2.5em;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #f2f2f2;
+      text-align: center;
+    }
+
+    th {
+      background: #ffbcd4;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background: #fff5f8;
+    }
+
+    .btn {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ff4081;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    button {
+      background: #ff6b9f;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff4081;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>{{ title }}</h1>
+
+  <div class="card">
+    <h3>Available Items</h3>
+    {% if rows %}
+    <table>
+      <tr>
+        <th>Code</th>
+        <th>Item</th>
+        <th>Contains</th>
+        <th>Price</th>
+        {% if table_name in ['sundaes', 'shakes'] %}
+          <th>Description</th>
+        {% endif %}
+        <th></th>
+      </tr>
+      {% for row in rows %}
+      <tr>
+        {% for col in row %}
+          <td>{{ col }}</td>
+        {% endfor %}
+        <td>
+          {% if row.__class__.__name__ == 'dict' %}
+            {% set code_value = row['Code'] %}
+          {% else %}
+            {% set code_value = row[0] %}
+          {% endif %}
+          <a href="{{ url_for('add_to_cart', code=code_value) }}">
+            <button class="btn">🛒 Add to Cart</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+      <p style="text-align:center; color:#999;">No items found in this category 🍦</p>
+    {% endif %}
+  </div>
+
+  <div class="nav-buttons">
+    <a href="{{ url_for('menu_cart') }}"><button class="cart-btn">🛍 View Cart</button></a>
+    <a href="{{ url_for('index') }}"><button>🏠 Home</button></a>
+  </div>
+
+</body>
+</html>
